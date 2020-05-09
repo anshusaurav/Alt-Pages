@@ -5,12 +5,54 @@
   font-family: 'Muli', sans-serif;
 }
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  
   min-height: 100vh;
   background: #ebf5fc;
 }
+logo-img{
+  width: 100px;
+  height: 100%;
+  background: #555;
+}
+
+header {
+  width: 100%;
+  height: 100px;
+  background: #222;
+  display: grid;
+}
+
+a {
+  text-decoration: none;
+}
+
+.nav-button {
+  width: 200px;
+  height: 40px;
+  border: 1px solid #FFF;
+  border-radius: 3px;
+  float: right;
+  margin-top: 15px;
+  margin-right: 20px;
+  color: #FFF;
+  line-height: 36px;
+  text-align: center;
+  font-size: 22px;
+}
+
+.nav-button:hover {
+  color: #40A4e8;
+  border: 1px solid #4094e8;
+}
+
+p {
+  font-size: 30px;
+  float: left;
+  line-height: 67px;
+  color: #FFF;
+  margin-left: 20px;
+}
+
 .form {
   position: relative;
   width: 350px;

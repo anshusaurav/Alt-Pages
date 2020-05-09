@@ -9,11 +9,12 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
   </head>
 <body>
-<div>
-<a class="nav-link" href='/users/register'>Register</a> 
+  <header>
+    <a href='/'><img class='logo-img' src="images/logo.png" alt="logo" /></a>
+    <a href="/users/login"><div class="nav-button">Sign in</div></a>
+    <a href="/users/register"><div class="nav-button">Get Started</div></a>
+  </header>
 
-<a class="nav-link" href='/users/login'>Login</a> 
-</div>
 <div class="flashes">
   <% if(locals.message){ %>
       <% console.log('Client: ', JSON.stringify(locals.message)) %>

@@ -11,7 +11,7 @@ var usersRouter = require('./routes/users');
 var MongoStore = require('connect-mongo')(session);
 //connect to mongodb
 
-mongoose.connect('mongodb://localhost/user-login',
+mongoose.connect('mongodb://localhost/alt-pages-db',
 {useNewUrlParser: true, useUnifiedTopology: true},
  (err)=>{
   console.log("connected", err? err:true);
