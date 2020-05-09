@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Express-Gen-Blog</title>
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+  </head>
+<body>
+<div>
+<a class="nav-link" href='/users/register'>Register</a> 
+
+<a class="nav-link" href='/users/login'>Login</a> 
+</div>
+<div class="flashes">
+  <% if(locals.message){ %>
+      <% console.log('Client: ', JSON.stringify(locals.message)) %>
+       <% if(locals.message.Success) { %>
+          <div class="alert alert-success" role="alert">
+              <strong>Success</strong> <%=message.Success[0]%>
+          </div>
+      <% } else {%>
+          <div class="alert alert-error" role="alert">
+              <strong>Failure</strong> <%=message.Error[0]%>
+          </div>
+
+      <% } %>
+  <% } %>
+</div>
+
+</body>
