@@ -213,7 +213,7 @@ textarea{
   box-sizing: content-box;
   color: #111;
 }
-.button, input[type=submit]{
+.button-new, input[type=submit]{
   font-family: 'Muli', sans-serif;
   display: inline-block;
   padding: 15px;
@@ -234,13 +234,13 @@ textarea{
   box-sizing: border-box;
   text-align: center;
 }
-.button:hover, input[type=submit]:hover {
+.button-new:hover, input[type=submit]:hover {
   background: #353131;
   box-shadow: 0 4px 1px #010101;
   border-bottom: 2px solid #000000;
   transition: all 0.2s ease-in;
 }
-.button:active, input[type=submit]:active {
+.button-new:active, input[type=submit]:active {
   transform: translateY(4px);
   border-bottom-width: 2px;
   box-shadow: none;

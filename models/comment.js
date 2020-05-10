@@ -15,7 +15,12 @@ var commentSchema = new Schema({
     articleId: {
         type: Schema.Types.ObjectId,
         ref: "Article",
-        required: "true",
+        required: true,
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref="User",
+        required: true
     }
 },{timestamps: true});
 

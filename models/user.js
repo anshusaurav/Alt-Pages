@@ -18,8 +18,11 @@ var userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minlength: 6
     },
+    articles: [{
+        type: Schema.Types.ObjectId,
+        ref: "Article",
+    }],
     
 },{timestamps: true});
 
