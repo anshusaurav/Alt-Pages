@@ -7,8 +7,27 @@ var User = require("../models/user")
 // var commentRouter = require("./comments");
 
 /* GET home page. */
-
 router.get('/', function(req, res, next) {
+    Article.find({}, (err, articles) =>{
+        if(err)
+            return next(err);
+        if(req.session.userId){
+            User.findById(req.session.userId, (err, user) => {
+                if(err)
+                    return next(err);
+                return res.render('articles', {user: user, isUser: true, title: 'Alt-Pages' });
+            }) 
+        }
+        else{
+            req.flash('Error', 'Please login to continue')
+            res.locals.message = req.flash();
+            return res.redirect('/users/login'); 
+        }
+    });
+});
+
+
+router.get('/list', function(req, res, next) {
     Article.find({}, (err, articles) =>{
         if(err)
             return next(err);
