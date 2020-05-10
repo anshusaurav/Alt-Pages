@@ -249,7 +249,7 @@ h4{
   color: #535353;
   display: grid;
   grid-template-columns: 8fr 1fr 1fr;
-  align-items: center;
+  align-items: start;
   grid-gap: 1rem;
 }
 
@@ -313,4 +313,8 @@ h4{
 } */
 .author-displ{
   color: #ddd;
+}
+
+.comment-text{
+  min-height: 80px;
 }

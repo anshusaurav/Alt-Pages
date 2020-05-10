@@ -2,11 +2,11 @@
 <% console.log(article) %>
 <div>
     <div class='grid-col-end'>
-        <% if(article.author == user.id) { %>
+        <% if(article.author.id === user.id) { %>
             <a href='/articles/<%= article.id %>/edit'><i title="Edit" class="far fa-edit"></i></a>
             <a href='/articles/<%= article.id %>/delete'><i title="Delete" class="far fa-trash-alt"></i></a> 
         <% }%>
-        <% console.log(article.author + "|" + user.id) %>
+        <% console.log(article.author.id + "|" + user.id) %>
     </div>
     <div>
         <h2 class='article-page-title'><%= article.title%></h2>
@@ -36,9 +36,11 @@
             <div class='single-comment'>
                 <div class="comment-content-div">
                 
-                    <p>&#8220;<%= `${elem.content.trim()}`%>&#8221;</p>
+                    <p class='comment-text'>&#8220;<%= `${elem.content.trim()}`%>&#8221;</p>
+                    <% if(user.id === elem.author.id) { %>
                     <a href="/comments/<%= elem.id %>/edit"><i class="far fa-edit"></i></a>
                     <a href="/comments/<%= elem.id %>/delete"><i class="far fa-trash-alt"></i></a>
+                    <% } %>
                 </div>
                 <div class="comment-author-div">
                     <p><span class="by-span">By:</span>  <%= elem.author%></p>
@@ -52,7 +54,7 @@
     <form class="comment-form" action="/articles/<%= article.id %>/comments" method="POST">
         <textarea class="comment-area" name="content" placeholder="Add response" required></textarea>
         <div class="comment-flex-col-2">
-            <input type="text" class="comment-author-input" name="author" placeholder="Reader's name" value="<%= user.name.split(' ')[0] %>"required  disabled/>
+            
             <input id="comment-btn" type="submit" value="Add Response">
         </div>
     </form>

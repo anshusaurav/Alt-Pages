@@ -128,7 +128,7 @@ router.get('/:id', function(req, res, next) {
                 return next(err);
             Article
             .findById(id)
-            .populate('comments', "content author")
+            .populate('comments')
             .populate('author')
             .exec((err, article) =>{   //can add filter, projections and skip
                 return res.render("viewArticle", {article:article, user:user, isUser: true});
@@ -144,13 +144,29 @@ router.get('/:id', function(req, res, next) {
 
 //Add Comment
 
-router.post('/:articleId/comments', (req, res, next) =>{
+router.post('/:articleId/comments', (req, res, next) => {
     var id = req.params.articleId;
+
+    // if(req.session.userId){
+    //     User.findById(req.session.userId, (err, user) => {
+    //         if(err)
+    //             return next(err);
+    //         return res.render("addArticle", {user: user, isUser: true});
+    //     }) 
+    // }
+    // else{
+    //     req.flash('Error', 'Please login to continue')
+    //     res.locals.message = req.flash();
+    //     return res.render('login');  
+    // }
+
+
     req.body.articleId = req.params.articleId;
-    Comment.create(req.body, (err, newComment) =>{
+    req.body.author = req.session.userId;
+    Comment.create(req.body, (err, newComment) => {
         if(err)
             return next(err);
-        Article.findByIdAndUpdate(id, {$push: {comments: newComment.id}}, (err, article) =>{
+        Article.findByIdAndUpdate(id, {$push: {comments: newComment.id}}, (err, article) => {
             res.redirect(`/articles/${id}`);
         });
         
