@@ -13,7 +13,7 @@ var articleSchema = new Schema({
     },
     author: {
         type: String,
-        required: true,
+        required: true
     },
     userId: {
         type: Schema.Types.ObjectId,

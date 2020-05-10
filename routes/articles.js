@@ -67,8 +67,9 @@ router.get('/new', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     req.body.tags = req.body.tags.split(', ');
+    req.body.userId = req.session.userId;
     let tagArr = req.body.tags;
-
+    console.log(req.body);
     Article.create(req.body, (err, data) => {
         if(err) return next(err);
         tagArr.forEach(tagname =>{
@@ -88,7 +89,12 @@ router.post('/', function(req, res, next) {
             })
         })
         if(err) return next(err);
-        return res.redirect('/articles');
+        User.findByIdAndUpdate(req.session.userId, {$push: {articles: data.id}}, (err, user) =>{
+            if(err)
+                return next(err);
+            return res.redirect('/articles');
+        });
+        
     
     });
 });
