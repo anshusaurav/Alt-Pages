@@ -1,11 +1,18 @@
 var express = require('express');
 var router = express.Router();
-
+var Article = require("../models/article");
+var Comment = require("../models/comment");
+var Tag = require("../models/tag");
 /* GET home page. */
 router.get('/', function(req, res){
   console.log(req.session);
   // Get an array of flash messages by passing the key to req.flash()
-  res.render('index', { title: req.flash('info') });
+  Tag.find({}, (err, tags) =>{
+    if(err)
+        return next(err);
+    return res.render('index', {tags});
+});
+  
 });
 
 router.get('/flash', function(req, res){

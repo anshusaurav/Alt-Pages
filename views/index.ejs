@@ -4,15 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Express-Gen-Blog</title>
+    <title>Alt-Pages</title>
     <link rel="stylesheet" href="/stylesheets/style.css"/>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@1,700&display=swap" rel="stylesheet">
   </head>
 <body>
   <header>
-    <a href='/'><img class='logo-img' src="images/logo.png" alt="logo" /></a>
-    <a href="/users/login"><div class="nav-button">Sign in</div></a>
-    <a href="/users/register"><div class="nav-button">Get Started</div></a>
+    <a href='/'><p class='header-links' id='logo-p'>Alt-Pages</p></a>
+    <a href="/users/login"><div class="button header-links">Sign Up</div></a>
+    <a href="/users/register"><div class="button header-links">Sign In</div></a>
+    
   </header>
 
 <div class="flashes">
@@ -30,5 +32,22 @@
       <% } %>
   <% } %>
 </div>
-
+<main>
+  <div  class='container'>
+  <h2 class='home-page-hero'>Get smarter about what matters to you.</h2>
+  <% if(tags.length) { %>
+    <h1>Get smarter about what matters to you.</h1>
+        <div class='tags-grid'>
+            <% tags.forEach(element => { %>
+                <div class="tag-elem-div">
+                    <a href="/tags/<%= element.tagname %>" class="tag-elem"> <%= element.tagname%></a>
+                </div>
+            <% }); %>
+        </div>
+        <h2>Select what you're into. We'll help you find great things to read.</h2>
+    <% } else { %>
+     <h1>No tags for now. Come back later</h1>
+    <% } %> 
+</container>
+</main>
 </body>

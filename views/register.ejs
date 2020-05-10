@@ -10,26 +10,28 @@
     
   </head>
   <body>
-<form class="form" action="/users/register" method="POST">
-    <h2>Register</h2>
-    <div class="input">
-        <div class="inputBox">
+    <div class=form-container>
+      <form class="form" action="/users/register" method="POST">
+        <h2>Register</h2>
+        <div class="input">
+          <div class="inputBox">
+                <label>Username</label>
+                <input type="text" name="name" placeholder="Name" required/>
+          </div>
+          <div class="inputBox">
             <label>Username</label>
-            <input type="text" name="name" placeholder="Name" required/>
+            <input type="email" name="email" placeholder="example@xyz.com" required>
+          </div>
+          <div class="inputBox">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="*******" required>
+          </div>
+          <div class="inputBox">
+            <input type="submit" value="SignUp">
+          </div>
         </div>
-      <div class="inputBox">
-        <label>Username</label>
-        <input type="email" name="email" placeholder="example@xyz.com" required>
-      </div>
-      <div class="inputBox">
-        <label>Password</label>
-        <input type="password" name="password" placeholder="*******" required>
-      </div>
-      <div class="inputBox">
-        <input type="submit" value="SignUp">
-      </div>
+        <p class="forget">Already registered? <a href="/users/login">Click Here</a></p>
+      </form>
     </div>
-    <p class="forget">Already registered? <a href="/users/login">Click Here</a></p>
-  </div>
   </body>
 </html>
