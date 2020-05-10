@@ -32,7 +32,19 @@ router.get('/:tagname', function(req, res, next){
     Article.find({tags: {$in:[tagname]}}, (err, articles) =>{
         if(err)
             return next(err);
-        return res.render("allArticle", {articles});
+        if(req.session.userId){
+            User.findById(req.session.userId, (err, user) => {
+                if(err)
+                    return next(err);
+                return res.render('allArticle', {articles:articles, user: user, isUser: true });
+            }) 
+        }
+        else{
+            req.flash('Error', 'Please login to continue')
+            res.locals.message = req.flash();
+            return res.render('login'); 
+        }
+        //return res.render("allArticle", {allArticle});
     });
 });
 module.exports = router;

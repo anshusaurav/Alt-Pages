@@ -1,8 +1,8 @@
 body {
   font-family: 'Muli', sans-serif;
   font-size: 14px;
-  color: white;
-  background: #1c1c1c
+  color: rgb(37, 37, 37);
+  background: #ebf5fc;
 }
 .container{
   width: 1200px;
@@ -10,6 +10,7 @@ body {
   border-radius: 24px;
   border: 2px ridge rgb(0, 0, 0);
   padding: 1rem;
+  min-height: 90vh;
 }
 h1{
   text-align: center;
