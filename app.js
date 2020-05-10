@@ -6,9 +6,10 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var flash = require("connect-flash")
 var session = require("express-session");
+var MongoStore = require('connect-mongo')(session);
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var MongoStore = require('connect-mongo')(session);
+
 //connect to mongodb
 
 mongoose.connect('mongodb://localhost/express-gen-blog',

@@ -44,7 +44,7 @@ router.post('/login', async function(req, res, next){
   var {email, password} = req.body;
   let user = await User.findOne({email});
   if(!user) {
-    req.flash('Error', 'Email is not registered')
+    req.flash('Error', 'Email is not registered, please register')
     res.locals.message = req.flash();
       return res.render('login');
   }
