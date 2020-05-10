@@ -10,6 +10,7 @@ var MongoStore = require('connect-mongo')(session);
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var articlesRouter = require('./routes/articles');
+var tagsRouter = require('./routes/tags');
 //connect to mongodb
 
 mongoose.connect('mongodb://localhost/express-gen-blog',
@@ -56,6 +57,7 @@ app.use((req, res, next) =>{
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/articles', articlesRouter);
+app.use('/tags', tagsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

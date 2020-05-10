@@ -64,4 +64,13 @@ router.post('/login', async function(req, res, next){
   }
     
 })
+
+router.get('/logout', function(req, res, next) {
+  if(req.session.userId){
+    req.session.destroy(function (err) {
+      res.redirect('/'); //Inside a callback… bulletproof!
+    });
+  }
+  res.redirect('/');
+});
 module.exports = router;
