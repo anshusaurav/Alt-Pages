@@ -33,7 +33,9 @@ router.get('/list', function(req, res, next) {
     // .populate('comments', "content author")
     // .exec((err, article) =>{   //can add filter, projections and skip
     //     res.render("viewArticle", {article});
-    Article.find({}).populate('userId').exec((err, articles) =>{
+    Article.find({})
+        .populate('author')
+        .exec((err, articles) =>{
         if(err)
             return next(err);
         if(req.session.userId){
@@ -72,7 +74,7 @@ router.get('/new', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     req.body.tags = req.body.tags.split(', ');
-    req.body.userId = req.session.userId;
+    req.body.author = req.session.userId;
     let tagArr = req.body.tags;
     console.log(req.body);
     Article.create(req.body, (err, data) => {
@@ -110,7 +112,6 @@ router.post('/', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
     // console.log('view');
     let id = req.params.id;
-    let tags={};
     // Article.findById(id, (err, article) =>{
     //     if(err)
     //         return next(err);
@@ -120,13 +121,25 @@ router.get('/:id', function(req, res, next) {
     //         return res.render("viewArticle", {article, comments, tags});  
     //     });
     // });
-    Article
-    .findById(id)
-    .populate('comments', "content author")
-    .exec((err, article) =>{   //can add filter, projections and skip
-        res.render("viewArticle", {article});
-        //console.log(err, article);
-    });
+    
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            if(err)
+                return next(err);
+            Article
+            .findById(id)
+            .populate('comments', "content author")
+            .populate('author')
+            .exec((err, article) =>{   //can add filter, projections and skip
+                return res.render("viewArticle", {article:article, user:user, isUser: true});
+            }) 
+        });
+    }
+    else{
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login');  
+    }
 });
 
 //Add Comment

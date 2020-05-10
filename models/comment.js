@@ -8,16 +8,12 @@ var commentSchema = new Schema({
         type: String,
         required: true,
     },
-    author: {
-        type: String,
-        required: true,
-    },
     articleId: {
         type: Schema.Types.ObjectId,
         ref: "Article",
         required: true,
     },
-    userId: {
+    author: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true

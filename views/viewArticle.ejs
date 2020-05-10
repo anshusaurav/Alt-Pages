@@ -1,12 +1,16 @@
 <%- include('partials/header') -%>
+<% console.log(article) %>
 <div>
     <div class='grid-col-end'>
-        <a href='/articles/<%= article.id %>/edit'><i title="Edit" class="far fa-edit"></i></a>
-        <a href='/articles/<%= article.id %>/delete'><i title="Delete" class="far fa-trash-alt"></i></a> 
+        <% if(article.author == user.id) { %>
+            <a href='/articles/<%= article.id %>/edit'><i title="Edit" class="far fa-edit"></i></a>
+            <a href='/articles/<%= article.id %>/delete'><i title="Delete" class="far fa-trash-alt"></i></a> 
+        <% }%>
+        <% console.log(article.author + "|" + user.id) %>
     </div>
     <div>
         <h2 class='article-page-title'><%= article.title%></h2>
-        <h4 class='article-page-author'>By: <%= article.author%></h4>
+        <h4 class='article-page-author'>By: <%= article.author.name%></h4>
         <% console.log(article.description) %>
         <% var arr = article.description.split(/\r?\n/)%>
         <% arr.forEach(elem => {  %>
@@ -37,7 +41,7 @@
                     <a href="/comments/<%= elem.id %>/delete"><i class="far fa-trash-alt"></i></a>
                 </div>
                 <div class="comment-author-div">
-                    <p><span class="by-span">By:</span> <%= elem.author%></p>
+                    <p><span class="by-span">By:</span>  <%= elem.author%></p>
                 </div>
             </div>
             <% })%>
@@ -48,7 +52,7 @@
     <form class="comment-form" action="/articles/<%= article.id %>/comments" method="POST">
         <textarea class="comment-area" name="content" placeholder="Add response" required></textarea>
         <div class="comment-flex-col-2">
-            <input type="text" class="comment-author-input" name="author" placeholder="Reader's name" required/>
+            <input type="text" class="comment-author-input" name="author" placeholder="Reader's name" value="<%= user.name.split(' ')[0] %>"required  disabled/>
             <input id="comment-btn" type="submit" value="Add Response">
         </div>
     </form>

@@ -1,12 +1,11 @@
     <%- include('partials/header') -%>
-    <% console.log(articles) %>
     <% if(articles.length) { %>
     <h1>All Articles</h1>
     <div class='article-list-grid'>
     <% articles.forEach(elem => { %>
         <div class='single'>
             <a href="/articles/<%= elem.id %>/"><h2 class='single-heading'><%= elem.title%></h2></a>
-            <h4 class='author-displ'>By: <%= elem.userId.name%></h4>
+            <h4 class='author-displ'>By: <%= elem.author.name%></h4>
             <div class='tags-grid'>
                 <% elem.tags.forEach(element => { %>
                     <div class="tag-elem-div">
