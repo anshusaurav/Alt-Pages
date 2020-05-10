@@ -21,7 +21,7 @@ router.get('/', function(req, res, next) {
         else{
             req.flash('Error', 'Please login to continue')
             res.locals.message = req.flash();
-            return res.redirect('/users/login'); 
+            return res.render('login'); 
         }
     });
 });
@@ -31,13 +31,38 @@ router.get('/list', function(req, res, next) {
     Article.find({}, (err, articles) =>{
         if(err)
             return next(err);
-        return res.render("allArticle",{articles});
+        if(req.session.userId){
+            User.findById(req.session.userId, (err, user) => {
+                if(err)
+                    return next(err);
+                return res.render('allArticle', {articles: articles, user: user, isUser: true});
+            }) 
+        }
+        else{
+            req.flash('Error', 'Please login to continue')
+            res.locals.message = req.flash();
+            return res.render('login');  
+        }
+        
     });
 });
 
 //add article
 router.get('/new', function(req, res, next) {
-    return res.render("addArticle");
+
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            if(err)
+                return next(err);
+            return res.render("addArticle", {user: user, isUser: true});
+        }) 
+    }
+    else{
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login');  
+    }
+    
 });
 
 router.post('/', function(req, res, next) {

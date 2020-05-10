@@ -63,32 +63,8 @@ a {
 .like-grid > *{
   justify-self: center;
 }
-.tags-grid{
-  margin: 1rem 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr) ); 
-  grid-auto-rows: 32px;
-  grid-gap: 16px;
 
-}
-.tag-elem-div{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 16px;
-  /* padding: 6px 16px; */
-  /* margin-right: 16px; */
-  border: 2px solid #b0b0b0;
-  background: rgb(100, 100, 100);
-  
-}
-.tag-elem-div:hover{
-  color: #dddddd;
-  background-color: #111111;
-  cursor: pointer;
-}
-
-
+.fa-backward{}
 .grid-col-3{
   display: grid;
   grid-template-columns: repeat(auto-fill, 40px);
@@ -330,8 +306,8 @@ h4{
   border: 1px solid #1c1c1c;
   padding: 0.5rem;
 }
-
+/* 
 .tag-elem-div > a{
   color: white;
   cursor: pointer;
-}
+} */
