@@ -53,8 +53,7 @@ router.post('/login', async function(req, res, next){
     if(match) {
       console.log('Login Successful')
       req.session.userId = user.id;
-
-      return res.redirect('/users');
+      return res.redirect('/articles');
     }
     else{
       console.log('Error', 'Invalid password. Please try again');
