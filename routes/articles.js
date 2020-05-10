@@ -28,7 +28,12 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/list', function(req, res, next) {
-    Article.find({}, (err, articles) =>{
+    // Article
+    // .findById(id)
+    // .populate('comments', "content author")
+    // .exec((err, article) =>{   //can add filter, projections and skip
+    //     res.render("viewArticle", {article});
+    Article.find({}).populate('userId').exec((err, articles) =>{
         if(err)
             return next(err);
         if(req.session.userId){
