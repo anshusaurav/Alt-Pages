@@ -5,7 +5,7 @@ var Comment = require("../models/comment");
 var Tag = require("../models/tag");
 var User = require("../models/user");
 /* GET home page. */
-router.get('/', function(req, res){
+router.get('/', function(req, res) {
   console.log('HERE');
   console.log(req.session);
   // Get an array of flash messages by passing the key to req.flash()
@@ -13,13 +13,15 @@ router.get('/', function(req, res){
     if(err)
         return next(err);
     if(req.session.userId){
-      let user = User.findById(req.session.userId)
-      return res.render('index', {tags}, {user});
+      User.findById(req.session.userId, (err, user) => {
+        if(err)
+          return next(err);
+        return res.render('index', {tags: tags, user: user, isUser: true});
+      }) 
     }
     else
-    return res.render('index', {tags});
-});
-  // '5eb7b52be952a2054c602740',
+      return res.render('index', {tags: tags,isUser: false});
+  });
 });
 
 router.get('/flash', function(req, res){
