@@ -158,13 +158,13 @@ router.get('/popular', function (req, res, next) {
         User.findById(req.session.userId, (err, user) =>{
             if(err)
                 return next(err);
-            Article.find({}).populate('author').exec ((err, articles) =>{
+            Article.find().populate('author').exec ((err, articles) =>{
                 if(err)
                     return next(err);
                 articles.sort((a,b) => b.readersLiked.length - a.readersLiked.length);
                 if(articles.length > 10)
                     articles = articles.slice(0,10);
-                return res.render('allArticle', {articles: user.likedArticles, user: user, isUser: true});
+                return res.render('allArticle', {articles: articles, user: user, isUser: true});
             });
         });
     }
