@@ -200,11 +200,16 @@ router.get('/:articleId/comments/:commentId/delete', (req, res, next) =>{
     if(req.session.userId){
         User.findById(req.session.userId, (err, user) => {
             Comment.findByIdAndDelete(commentId, (err, comment) =>{
-                // Article.findByIdAndUpdate(articleId, {$pull: { comments: { $in: [commentId] } } }, (err, article)=>{
+                Article.findByIdAndUpdate(articleId, {$pull: { comments: comment.id  } }, (err, article)=>{
                     if(err)
                         return next(err);
-                    res.redirect(`/articles/${articleId}`);
-                // });
+                        User.findByIdAndUpdate(req.session.userId,{$pull:{comments:comment.id}},{new:true}, (err, updatedUser) =>{
+                            if(err)
+                                return next(err);
+                            res.redirect(`/articles/${articleId}`);
+                    });
+                    
+                });
             });
         });
     }
@@ -394,8 +399,11 @@ router.get('/:id/delete', function(req, res, next) {
                         }
                     });
                 });
-                res.redirect('/articles');
-            });
+                User.findByIdAndUpdate(req.session.userId,{$pull:{articles:article.id}},{new:true}, (err, updatedUser) =>{
+                    res.redirect('/articles');
+                });
+            })
+               
         });
     }
     else {
