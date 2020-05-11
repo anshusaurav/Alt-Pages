@@ -24,6 +24,16 @@ var articleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Comment",
     }],
+
+    readersLiked: [{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    }],
+
+    readersDisliked: [{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    }],
     tags: [String]
     
 },{timestamps: true});

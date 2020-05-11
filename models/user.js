@@ -26,6 +26,16 @@ var userSchema = new Schema({
     comments: [{
         type: Schema.Types.ObjectId,
         ref: "Comment",
+    }],
+
+    likedArticles: [{
+        type: Schema.Types.ObjectId,
+        ref: "Article",
+    }],
+
+    dislikedArticles: [{
+        type: Schema.Types.ObjectId,
+        ref: "Article",
     }]
     
 },{timestamps: true});

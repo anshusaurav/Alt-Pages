@@ -149,20 +149,6 @@ router.get('/:id', function(req, res, next) {
 router.post('/:articleId/comments', (req, res, next) => {
     var id = req.params.articleId;
 
-    // if(req.session.userId){
-    //     User.findById(req.session.userId, (err, user) => {
-    //         if(err)
-    //             return next(err);
-    //         return res.render("addArticle", {user: user, isUser: true});
-    //     }) 
-    // }
-    // else{
-    //     req.flash('Error', 'Please login to continue')
-    //     res.locals.message = req.flash();
-    //     return res.render('login');  
-    // }
-
-
     req.body.article = req.params.articleId;
     req.body.author = req.session.userId;
     if(req.session.userId){
@@ -418,21 +404,11 @@ router.get('/:id/delete', function(req, res, next) {
 //like 
 router.get('/:id/like', function(req, res, next) {
     let id = req.params.id;
-    
-    // req.body.likes = likeCount + 1;
-    Article.findById(id, (err, article) =>{
+    Article.findByIdAndUpdate(id, { $inc: { likes: 1 }}, (err, updatedArticle) =>{
         if(err)
             return next(err);
-        console.log(article.likes);
-        article.likes = article.likes + 1;
-        Article.findByIdAndUpdate(id, article, (err, updatedArticle) =>{
-            if(err)
-                return next(err);
-            res.redirect(`/articles/${article.id}`);
-        });
+        res.redirect(`/articles/${id}`);
     });
-    
-    
 });
 
 
@@ -441,19 +417,11 @@ router.get('/:id/like', function(req, res, next) {
 router.get('/:id/dislike', function(req, res, next) {
     let id = req.params.id;
     
-    Article.findById(id, (err, article) =>{
+    Article.findByIdAndUpdate(id, { $inc: { likes: -1 }}, (err, updatedArticle) =>{
         if(err)
             return next(err);
-        console.log(article.likes);
-        if(article.likes > 0)
-            article.likes = article.likes - 1;
-        Article.findByIdAndUpdate(id, article, (err, updatedArticle) =>{
-            if(err)
-                return next(err);
-            res.redirect(`/articles/${article.id}`);
-        });
+        res.redirect(`/articles/${id}`);
     });
-    
     
 });
 module.exports = router;
