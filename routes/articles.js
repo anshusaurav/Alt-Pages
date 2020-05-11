@@ -128,7 +128,9 @@ router.get('/:id', function(req, res, next) {
                 return next(err);
             Article
             .findById(id)
-            .populate('comments')
+            .populate({path:"comments",populate:{
+                path:"author"
+            }})
             .populate('author')
             .exec((err, article) =>{   //can add filter, projections and skip
                 return res.render("viewArticle", {article:article, user:user, isUser: true});

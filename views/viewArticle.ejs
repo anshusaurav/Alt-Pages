@@ -38,13 +38,13 @@
                 
                     <p class='comment-text'>&#8220;<%= `${elem.content.trim()}`%>&#8221;</p>
                     <% console.log(user.id  +'||||||'+ elem.author) %>
-                    <% if(user.id == elem.author) { %>
+                    <% if(user.id == elem.author.id) { %>
                     <a href="/articles/<%= article.id %>/comments/<%= elem.id %>/edit"><i class="far fa-edit"></i></a>
                     <a href="/articles/<%= article.id %>/comments/<%= elem.id %>/delete"><i class="far fa-trash-alt"></i></a>
                     <% } %>
                 </div>
                 <div class="comment-author-div">
-                    <p><span class="by-span">By:</span>  <%= elem.author%></p>
+                    <p><span class="by-span">By:</span>  <%= elem.author.name%></p>
                 </div>
             </div>
             <% })%>
