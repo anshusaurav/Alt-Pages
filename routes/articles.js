@@ -250,11 +250,20 @@ router.post('/:articleId/comments/:commentId/edit', (req, res, next) =>{
     console.log('Here updating comment');
     console.log(commentId, articleId);
     req.body.articleId = articleId;
-    Comment.findByIdAndUpdate(commentId, req.body, (err, comment) =>{
-        if(err)
-            return next(err);
-        res.redirect(`/articles/${articleId}`);
-    });
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            Comment.findByIdAndUpdate(commentId, req.body, (err, comment) =>{
+                if(err)
+                    return next(err);
+                res.redirect(`/articles/${articleId}`);
+            });
+        });
+    }
+    else {
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login');  
+    }
 
 });
 
@@ -262,104 +271,131 @@ router.post('/:articleId/comments/:commentId/edit', (req, res, next) =>{
 
 router.get('/:id/edit', function(req, res, next) {
     let id = req.params.id;
-    Article.findById(id, (err, article) =>{
-        if(err)
-            return next(err);
-        
-        return res.render("editArticle", {article});
-    });
-    
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            Article.findById(id, (err, article) =>{
+                if(err)
+                    return next(err);
+                
+                return res.render("editArticle", {article, user: user, isUser: true});
+            });
+        });
+    }
+    else {
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login');  
+    }
 });
+    
 
 router.post('/:id', function(req, res, next) {
     let id = req.params.id;
     req.body.tags = req.body.tags.split(', ');
     let newTags = req.body.tags;
-    Article.findByIdAndUpdate(id, req.body,  {new: true, runValidators: true},(err, data) => {
-        if(err) 
-            return next(err);
-        let oldTags = data.tags;
-        //remove newtags from old tags
-        oldTags = oldTags.filter((elem) => {
-            return !newTags.includes(elem);
-        })
-
-        oldTags.forEach(tagname =>{
-             Tag.findOne({tagname}, (err, tag) =>{
-                if(err)
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            Article.findByIdAndUpdate(id, req.body,  {new: true, runValidators: true},(err, data) => {
+                if(err) 
                     return next(err);
-                if(!tag){
+                let oldTags = data.tags;
+                //remove newtags from old tags
+                oldTags = oldTags.filter((elem) => {
+                    return !newTags.includes(elem);
+                })
 
-                }
-                else{
-                    Tag.findOneAndUpdate({tagname},{$pull:{articles:data.id}},{new:true}, (err,updatedTag) => {
-                        if(err) 
+                oldTags.forEach(tagname =>{
+                    Tag.findOne({tagname}, (err, tag) =>{
+                        if(err)
                             return next(err);
-                        if(updatedTag.articles.length == 0) {
-                            Tag.findOneAndDelete({tagname}, (err, deletedTag)=>{
-                                if(err)
-                                    return next(err); 
-                            });
+                        if(!tag){
+
+                        }
+                        else{
+                            Tag.findOneAndUpdate({tagname},{$pull:{articles:data.id}},{new:true}, (err,updatedTag) => {
+                                if(err) 
+                                    return next(err);
+                                if(updatedTag.articles.length == 0) {
+                                    Tag.findOneAndDelete({tagname}, (err, deletedTag)=>{
+                                        if(err)
+                                            return next(err); 
+                                    });
+                                }
+                            })
+                        }
+                    });
+                });
+
+                newTags.forEach(tagname =>{
+                    Tag.findOne({tagname},(err,tag)=> {
+                        if(err) return next(err);
+                        //console.log(tag.articles);
+                        if(!tag) {
+                            Tag.create({tagname,articles:data.id},(err,createdTag)=> {
+                                if(err) return next(err);
+                            })
+                        }
+                        else {
+                            Tag.findOneAndUpdate({tagname},{$addToSet:{articles:data.id}},(err,updatedTag) => {
+                                if(err) return next(err);
+
+                            })
                         }
                     })
-                }
+                })
+                return res.redirect('/articles');
             });
         });
-
-        newTags.forEach(tagname =>{
-            Tag.findOne({tagname},(err,tag)=> {
-                if(err) return next(err);
-                //console.log(tag.articles);
-                if(!tag) {
-                    Tag.create({tagname,articles:data.id},(err,createdTag)=> {
-                        if(err) return next(err);
-                    })
-                }
-                else {
-                    Tag.findOneAndUpdate({tagname},{$addToSet:{articles:data.id}},(err,updatedTag) => {
-                        if(err) return next(err);
-
-                    })
-                }
-            })
-        })
-        return res.redirect('/articles');
-    });
+    }
+    else {
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login');  
+    }
 });
 
 
 //delete article
 router.get('/:id/delete', function(req, res, next) {
     let id = req.params.id;
-    Article.findByIdAndDelete(id, (err, article) =>{
-        if(err)
-            return next(err);
-        let oldTags = article.tags;
-        
-
-        oldTags.forEach(tagname =>{
-            Tag.findOne({tagname}, (err, tag) =>{
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            Article.findByIdAndDelete(id, (err, article) =>{
                 if(err)
                     return next(err);
-                if(!tag){
+                let oldTags = article.tags;
+                
 
-                }
-                else{
-                    Tag.findOneAndUpdate({tagname},{$pull:{articles:article.id}},{new:true}, (err,updatedTag) => {
-                        if(err) 
+                oldTags.forEach(tagname =>{
+                    Tag.findOne({tagname}, (err, tag) =>{
+                        if(err)
                             return next(err);
-                        if(updatedTag.articles.length == 0) {
-                            Tag.findOneAndDelete({tagname}, (err, deletedTag)=>{
-                                if(err)
-                                    return next(err); 
-                            });
+                        if(!tag){
+
                         }
-                    })
-                }
+                        else{
+                            Tag.findOneAndUpdate({tagname},{$pull:{articles:article.id}},{new:true}, (err,updatedTag) => {
+                                if(err) 
+                                    return next(err);
+                                if(updatedTag.articles.length == 0) {
+                                    Tag.findOneAndDelete({tagname}, (err, deletedTag)=>{
+                                        if(err)
+                                            return next(err); 
+                                    });
+                                }
+                            })
+                        }
+                    });
+                });
+                res.redirect('/articles');
             });
         });
-        res.redirect('/articles');
-    });
+    }
+    else {
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login'); 
+    }
     
 });
 

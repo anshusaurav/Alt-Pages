@@ -29,22 +29,13 @@ router.get('/', function(req, res, next) {
 router.get('/:tagname', function(req, res, next){
     let tagname = req.params.tagname;
     console.log('HERE');
-    Article.find({tags: {$in:[tagname]}}, (err, articles) =>{
-        if(err)
-            return next(err);
-        if(req.session.userId){
-            User.findById(req.session.userId, (err, user) => {
+    Article.find({tags: {$in:[tagname]}})
+           .populate('author')
+           .exec((err, articles) =>{
                 if(err)
                     return next(err);
+                let user = {};
                 return res.render('allArticle', {articles:articles, user: user, isUser: true });
-            }) 
-        }
-        else{
-            req.flash('Error', 'Please login to continue')
-            res.locals.message = req.flash();
-            return res.render('login'); 
-        }
-        //return res.render("allArticle", {allArticle});
     });
 });
 module.exports = router;
