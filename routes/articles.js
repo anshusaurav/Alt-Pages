@@ -4,7 +4,6 @@ var Article = require("../models/article");
 var Comment = require("../models/comment");
 var Tag = require("../models/tag");
 var User = require("../models/user")
-// var commentRouter = require("./comments");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -28,11 +27,6 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/list', function(req, res, next) {
-    // Article
-    // .findById(id)
-    // .populate('comments', "content author")
-    // .exec((err, article) =>{   //can add filter, projections and skip
-    //     res.render("viewArticle", {article});
     Article.find({})
         .populate('author')
         .exec((err, articles) =>{
@@ -128,15 +122,9 @@ router.get('/self', function (req, res, next) {
     }
 });
 
-//
 //liked articles
 router.get('/liked', function (req, res, next) {
     console.log('AltAltAlt');
-    // Article
-    //         .findById(id)
-    //         .populate({path:"comments",populate:{
-    //             path:"author"
-    //         }})
     if(req.session.userId){
         User.findById(req.session.userId)
             .populate({path: 'likedArticles',populate:{
@@ -157,19 +145,9 @@ router.get('/liked', function (req, res, next) {
 //view article
 
 router.get('/:id', function(req, res, next) {
-    // console.log('view');
     console.log('AltAlt');
     let id = req.params.id;
-    // Article.findById(id, (err, article) =>{
-    //     if(err)
-    //         return next(err);
-    //     Comment.find({articleId: id}, (err, comments) =>{
-    //         if(err)
-    //             return next(err);
-    //         return res.render("viewArticle", {article, comments, tags});  
-    //     });
-    // });
-    
+   
     if(req.session.userId){
         User.findById(req.session.userId, (err, user) => {
             if(err)
@@ -510,8 +488,5 @@ router.get('/:id/dislike', function(req, res, next) {
     
 });
 
-//myarticle
-/* <a class='nav-link' href='/articles/self'><h3>My Articles</h3></a>
-<a class='nav-link' href='/articles/liked'><h3>Liked Articles</h3></a> */
 
 module.exports = router;

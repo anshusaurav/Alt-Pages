@@ -25,7 +25,6 @@ a {
   font-weight: 600;
 }
 .nav-link:hover{
-  transform: scale(1.2);
   color: rgb(181, 181, 181);
   transition: all 0.2s ease-in-out;
 }
@@ -326,3 +325,19 @@ h4{
 .comment-text{
   min-height: 80px;
 }
+
+.article-home-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-columns: 240px;
+  grid-gap: 1rem;
+}
+
+.article-home-elem{
+  min-height: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid sandybrown;
+}
+
