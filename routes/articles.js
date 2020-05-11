@@ -187,6 +187,7 @@ router.get('/:articleId/comments/:commentId/delete', (req, res, next) =>{
             res.redirect(`/articles/${articleId}`);
         // });
     });
+    
 });
 
 
@@ -195,14 +196,31 @@ router.get('/:articleId/comments/:commentId/delete', (req, res, next) =>{
 router.get('/:articleId/comments/:commentId/edit', (req, res, next) =>{
     let articleId = req.params.articleId;
     let commentId = req.params.commentId;
-    Article.findById(articleId, (err, article) =>{
-        Comment.findById(commentId, (err, comment) =>{
-            if(err)
-                return next(err);
-            return res.render("editComment", {article, comment});  
+
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            Article.findById(articleId, (err, article) =>{
+                Comment.findById(commentId, (err, comment) =>{
+                    if(err)
+                        return next(err);
+                    if(comment.author == req.session.userId)
+                        return res.render("editComment", {article, comment, isUser: true, user: user});
+                    else {
+                        req.flash('Error', 'Please login to continue')
+                        res.locals.message = req.flash();
+                        return res.redirect(`/articles/${articleId}`); 
+                    }
+
+                });
+                
+            });
         });
-        
-    });
+
+    } else {
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login');  
+    }
 });
 
 

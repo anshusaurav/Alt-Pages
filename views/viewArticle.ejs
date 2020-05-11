@@ -37,9 +37,10 @@
                 <div class="comment-content-div">
                 
                     <p class='comment-text'>&#8220;<%= `${elem.content.trim()}`%>&#8221;</p>
-                    <% if(user.id === elem.author.id) { %>
-                    <a href="/comments/<%= elem.id %>/edit"><i class="far fa-edit"></i></a>
-                    <a href="/comments/<%= elem.id %>/delete"><i class="far fa-trash-alt"></i></a>
+                    <% console.log(user.id  +'||||||'+ elem.author) %>
+                    <% if(user.id == elem.author) { %>
+                    <a href="/articles/<%= article.id %>/comments/<%= elem.id %>/edit"><i class="far fa-edit"></i></a>
+                    <a href="/articles/<%= article.id %>/comments/<%= elem.id %>/delete"><i class="far fa-trash-alt"></i></a>
                     <% } %>
                 </div>
                 <div class="comment-author-div">
