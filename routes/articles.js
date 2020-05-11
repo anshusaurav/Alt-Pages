@@ -165,14 +165,23 @@ router.post('/:articleId/comments', (req, res, next) => {
 
     req.body.articleId = req.params.articleId;
     req.body.author = req.session.userId;
-    Comment.create(req.body, (err, newComment) => {
-        if(err)
-            return next(err);
-        Article.findByIdAndUpdate(id, {$push: {comments: newComment.id}}, (err, article) => {
-            res.redirect(`/articles/${id}`);
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            Comment.create(req.body, (err, newComment) => {
+                if(err)
+                    return next(err);
+                Article.findByIdAndUpdate(id, {$push: {comments: newComment.id}}, (err, article) => {
+                    res.redirect(`/articles/${id}`);
+                });
+                
+            });
         });
-        
-    });
+    }
+    else {
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login');  
+    }
     console.log(req.body);
 });
 
@@ -181,15 +190,23 @@ router.post('/:articleId/comments', (req, res, next) => {
 router.get('/:articleId/comments/:commentId/delete', (req, res, next) =>{
     var articleId = req.params.articleId;
     var commentId = req.params.commentId;
-    
-    Comment.findByIdAndDelete(commentId, (err, comment) =>{
-        // Article.findByIdAndUpdate(articleId, {$pull: { comments: { $in: [commentId] } } }, (err, article)=>{
-            if(err)
-                return next(err);
-            res.redirect(`/articles/${articleId}`);
-        // });
-    });
-    
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            Comment.findByIdAndDelete(commentId, (err, comment) =>{
+                // Article.findByIdAndUpdate(articleId, {$pull: { comments: { $in: [commentId] } } }, (err, article)=>{
+                    if(err)
+                        return next(err);
+                    res.redirect(`/articles/${articleId}`);
+                // });
+            });
+        });
+    }
+    else{
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login'); 
+    } 
+
 });
 
 
