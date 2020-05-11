@@ -163,7 +163,7 @@ router.post('/:articleId/comments', (req, res, next) => {
     // }
 
 
-    req.body.articleId = req.params.articleId;
+    req.body.article = req.params.articleId;
     req.body.author = req.session.userId;
     if(req.session.userId){
         User.findById(req.session.userId, (err, user) => {
@@ -171,7 +171,14 @@ router.post('/:articleId/comments', (req, res, next) => {
                 if(err)
                     return next(err);
                 Article.findByIdAndUpdate(id, {$push: {comments: newComment.id}}, (err, article) => {
-                    res.redirect(`/articles/${id}`);
+                    if(err)
+                        return next(err);
+                    User.findByIdAndUpdate(req.session.userId, {$push: {comments: newComment.id}}, (err, updatedUser) =>{
+                        if(err)
+                            return next(err);
+                        res.redirect(`/articles/${id}`);
+                    });
+                    
                 });
                 
             });

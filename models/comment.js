@@ -8,7 +8,7 @@ var commentSchema = new Schema({
         type: String,
         required: true,
     },
-    articleId: {
+    article: {
         type: Schema.Types.ObjectId,
         ref: "Article",
         required: true,

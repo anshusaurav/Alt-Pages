@@ -13,7 +13,7 @@ var articlesRouter = require('./routes/articles');
 var tagsRouter = require('./routes/tags');
 //connect to mongodb
 
-mongoose.connect('mongodb://localhost/express-gen-blog',
+mongoose.connect('mongodb://localhost/alt-pages-db',
 {useNewUrlParser: true, useUnifiedTopology: true},
  (err)=>{
   console.log("connected", err? err:true);
