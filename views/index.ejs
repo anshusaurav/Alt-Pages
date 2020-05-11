@@ -14,7 +14,7 @@
   <header>
     <a href='/'><p class='header-links' id='logo-p'>Alt-Pages</p></a>
     <% if(isUser){ %>
-      <a href="/users/profile"><div class="button header-links"> <%= user.name.split(' ')[0] %></div></a>
+      <a href="/users/<%=user.id %>"><div class="button header-links"> <%= user.name.split(' ')[0] %></div></a>
       <a href="/articles"><div class="button header-links">Home</div></a>
     <% } else { %>
       <a href="/users/register"><div class="button header-links">Sign Up</div></a>

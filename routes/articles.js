@@ -404,6 +404,7 @@ router.get('/:id/delete', function(req, res, next) {
 //like 
 router.get('/:id/like', function(req, res, next) {
     let id = req.params.id;
+    
     Article.findByIdAndUpdate(id, { $inc: { likes: 1 }}, (err, updatedArticle) =>{
         if(err)
             return next(err);

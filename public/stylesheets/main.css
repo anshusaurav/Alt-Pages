@@ -50,21 +50,29 @@ a {
   color: #d1d1d1;
 }
 .like-grid{
+  margin-top: 1rem;
+  font-size: 1.5rem;
+
   width: 150px;
   display: grid;
-  grid-template-columns: 50px 100px 50px;
+  grid-template-columns: 50px 144px 50px;
 }
 .fas {
-  color: #d4d4d4;
+  color: #363636;
 }
 .fas:hover {
-  color: #f4f4f4;
+  color: #363636;
   transition: all 0.2s ease-in-out;
 }
 .like-grid > *{
-  justify-self: center;
+  justify-self: start;
 }
-
+.liked-art {
+  color: rgb(20, 107, 20);
+}
+.disliked-art {
+  color: rgb(119, 25, 25);
+}
 .grid-col-3{
   display: grid;
   grid-template-columns: repeat(auto-fill, 40px);
