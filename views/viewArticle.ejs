@@ -17,9 +17,13 @@
             <p class='article-p'><%= elem %></p>
         <%}); %>
         <div class='like-grid'>
-            <a href='/articles/<%= article.id%>/like'><i class="fas fa-thumbs-up"></i></a>
-            <span class='likes-count'><%= `VOTES: ${article.likes}`%></span>
-            <a href='/articles/<%= article.id %>/dislike'><i class="fas fa-thumbs-down"></i></a>
+            <a href='/articles/<%= article.id%>/like'><i class="fas fa-thumbs-up 
+                <% if(user.likedArticles.includes(article.id)) {%>
+                <%= 'liked-art' %>
+                <% } %>
+                "></i></a>
+            <span class='likes-count'><%= `LIKES: ${article.readersLiked.length}`%></span>
+            
         </div>
         <div class='tags-grid'>
             <% article.tags.forEach(element => { %>

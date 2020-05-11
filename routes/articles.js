@@ -406,22 +406,34 @@ router.get('/:id/like', function(req, res, next) {
     let id = req.params.id;
     if(req.session.userId){
         User.findById(req.session.userId, (err, user) => {
-            Article.findByIdAndUpdate(id, { $inc: { likes: 1 }}, (err, updatedArticle) =>{
-                if(err)
-                    return next(err);
+            if(!user.likedArticles.includes(id)){
+                
                 User.findByIdAndUpdate(req.session.userId, {$addToSet:{likedArticles:id}},{new: true}, (err, updatedUser) =>{
                     if(err)
                         return next(err);
-                        Article.findByIdAndUpdate(id, {$addToSet:{readersLiked:req.session.userId}},{new: true}, (err, updatedArticle) =>{
+                        Article.findByIdAndUpdate(id, {$addToSet : { readersLiked:req.session.userId } },{ new: true }, (err, updatedArticle) =>{
                             if(err)
                                 return next(err);
                             console.log(updatedUser);
-                            console.log(updatedArticle;
+                            console.log(updatedArticle);
                             res.redirect(`/articles/${id}`);
                     });
                 })
-                
-            });
+            }
+            else
+            {
+                User.findByIdAndUpdate(req.session.userId, {$pull:{likedArticles:id}},{new: true}, (err, updatedUser) =>{
+                    if(err)
+                        return next(err);
+                        Article.findByIdAndUpdate(id, {$pull : { readersLiked:req.session.userId } },{ new: true }, (err, updatedArticle) =>{
+                            if(err)
+                                return next(err);
+                            console.log(updatedUser);
+                            console.log(updatedArticle);
+                            res.redirect(`/articles/${id}`);
+                    });
+                })    
+            }
         });
     }
     else {
