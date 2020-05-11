@@ -142,6 +142,39 @@ router.get('/liked', function (req, res, next) {
         return res.render('login'); 
     }
 });
+//popular(most-liked 10 articles)
+router.get('/popular', function (req, res, next) {
+    console.log('AltAltAlt');
+    if(req.session.userId){
+        // User.findById(req.session.userId)
+        //     .populate({path: 'likedArticles',populate:{
+        //         path: "author"
+        //     }})
+        //     .exec((err, user) =>{
+        //         if(err)
+        //             return next(err);
+        //         return res.render('allArticle', {articles: user.likedArticles, user: user, isUser: true});
+        //     })
+        User.findById(req.session.userId, (err, user) =>{
+            if(err)
+                return next(err);
+            Article.find({}).populate('author').exec ((err, articles) =>{
+                if(err)
+                    return next(err);
+                articles.sort((a,b) => b.readersLiked.length - a.readersLiked.length);
+                if(articles.length > 10)
+                    articles = articles.slice(0,10);
+                return res.render('allArticle', {articles: user.likedArticles, user: user, isUser: true});
+            });
+        });
+    }
+    else{
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login'); 
+    }
+});
+
 //view article
 
 router.get('/:id', function(req, res, next) {
