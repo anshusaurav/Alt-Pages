@@ -362,8 +362,6 @@ router.get('/:id/delete', function(req, res, next) {
                 if(err)
                     return next(err);
                 let oldTags = article.tags;
-                
-
                 oldTags.forEach(tagname =>{
                     Tag.findOne({tagname}, (err, tag) =>{
                         if(err)
@@ -386,10 +384,17 @@ router.get('/:id/delete', function(req, res, next) {
                     });
                 });
                 User.findByIdAndUpdate(req.session.userId,{$pull:{articles:article.id}},{new:true}, (err, updatedUser) =>{
-                    res.redirect('/articles');
+                    if(err)
+                        return next(err);
+                    User.updateMany({}, {$pull:{likedArticles:article.id}}, (err, users)=> {
+                        if(err)
+                            return next(err);
+                        res.redirect('/articles');
+                    });
+                    
                 });
-            })
-               
+                
+            })   
         });
     }
     else {
