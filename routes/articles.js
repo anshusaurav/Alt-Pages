@@ -105,12 +105,60 @@ router.post('/', function(req, res, next) {
     
     });
 });
+//my articles
+router.get('/self', function (req, res, next) {
+    console.log('AltAltAlt');
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            if(err)
+                return next(err);
+            Article.find({author: user.id})
+                .populate('author')
+                .exec((err, articles) =>{
+                    if(err)
+                        return next(err);
+                    return res.render('allArticle', {articles:articles, user: user, isUser: true });
+            });
+        });
+    }
+    else{
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login'); 
+    }
+});
 
-
+//
+//liked articles
+router.get('/liked', function (req, res, next) {
+    console.log('AltAltAlt');
+    // Article
+    //         .findById(id)
+    //         .populate({path:"comments",populate:{
+    //             path:"author"
+    //         }})
+    if(req.session.userId){
+        User.findById(req.session.userId)
+            .populate({path: 'likedArticles',populate:{
+                path: "author"
+            }})
+            .exec((err, user) =>{
+                if(err)
+                    return next(err);
+                return res.render('allArticle', {articles: user.likedArticles, user: user, isUser: true});
+            })
+    }
+    else{
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login'); 
+    }
+});
 //view article
 
 router.get('/:id', function(req, res, next) {
     // console.log('view');
+    console.log('AltAlt');
     let id = req.params.id;
     // Article.findById(id, (err, article) =>{
     //     if(err)
@@ -461,4 +509,9 @@ router.get('/:id/dislike', function(req, res, next) {
     });
     
 });
+
+//myarticle
+/* <a class='nav-link' href='/articles/self'><h3>My Articles</h3></a>
+<a class='nav-link' href='/articles/liked'><h3>Liked Articles</h3></a> */
+
 module.exports = router;
