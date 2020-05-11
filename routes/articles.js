@@ -404,12 +404,31 @@ router.get('/:id/delete', function(req, res, next) {
 //like 
 router.get('/:id/like', function(req, res, next) {
     let id = req.params.id;
-    
-    Article.findByIdAndUpdate(id, { $inc: { likes: 1 }}, (err, updatedArticle) =>{
-        if(err)
-            return next(err);
-        res.redirect(`/articles/${id}`);
-    });
+    if(req.session.userId){
+        User.findById(req.session.userId, (err, user) => {
+            Article.findByIdAndUpdate(id, { $inc: { likes: 1 }}, (err, updatedArticle) =>{
+                if(err)
+                    return next(err);
+                User.findByIdAndUpdate(req.session.userId, {$addToSet:{likedArticles:id}},{new: true}, (err, updatedUser) =>{
+                    if(err)
+                        return next(err);
+                        Article.findByIdAndUpdate(id, {$addToSet:{readersLiked:req.session.userId}},{new: true}, (err, updatedArticle) =>{
+                            if(err)
+                                return next(err);
+                            console.log(updatedUser);
+                            console.log(updatedArticle;
+                            res.redirect(`/articles/${id}`);
+                    });
+                })
+                
+            });
+        });
+    }
+    else {
+        req.flash('Error', 'Please login to continue')
+        res.locals.message = req.flash();
+        return res.render('login'); 
+    }
 });
 
 
