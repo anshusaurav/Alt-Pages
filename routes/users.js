@@ -71,6 +71,7 @@ router.get('/logout', function(req, res, next) {
       res.redirect('/'); //Inside a callback… bulletproof!
     });
   }
+  //delete req.session.userId;
   res.redirect('/');
 });
 module.exports = router;
