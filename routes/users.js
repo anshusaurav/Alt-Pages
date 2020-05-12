@@ -72,6 +72,19 @@ router.get('/logout', function(req, res, next) {
     });
   }
   //delete req.session.userId;
+  //res.clearCookie('connect-sid');
   res.redirect('/');
+});
+ 
+router.get('/:id', function(req, res, next) {
+  let id  = req.params.id;
+  if(req.session.userId){
+	
+  }
+  else{
+    req.flash('Error', 'Please login to continue')
+    res.locals.message = req.flash();
+    return res.render('login')
+  }
 });
 module.exports = router;

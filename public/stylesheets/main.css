@@ -283,9 +283,11 @@ h4{
   max-width: 50%;
 }
 .comment-area{
-  width: 98%;
-  min-height: 72px;
+  width: 100%;
+  min-height: 80px;
   border-radius: 8px;
+  box-sizing: border-box;
+  padding: 0.5rem;
 }
 .comment-author-input{
   height: 32px;
@@ -325,6 +327,13 @@ h4{
 
 .comment-text{
   min-height: 80px;
+  color: white;
+}
+
+.art-comment-btn:hover{
+  color: white;
+  /* box-shadow: 1px 1px #888888; */
+  transition: all 0.2s ease-in-out;
 }
 
 .article-home-grid{
