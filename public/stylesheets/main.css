@@ -349,7 +349,8 @@ h4{
 
 .article-home-elem{
   min-height: 240px;
-  border: 1px solid #0080ff;
+  border-radius: 12px;
+  border: 2px solid #0080ff;
 }
 .article-home-elem:hover{
   min-height: 240px;
