@@ -36,7 +36,7 @@ router.get('/list', function(req, res, next) {
             User.findById(req.session.userId, (err, user) => {
                 if(err)
                     return next(err);
-                return res.render('allArticle', {articles: articles, user: user, isUser: true});
+                return res.render('allArticle', {articles: articles, user: user, isUser: true, title: 'All Articles'});
             }) 
         }
         else{
@@ -111,7 +111,7 @@ router.get('/self', function (req, res, next) {
                 .exec((err, articles) =>{
                     if(err)
                         return next(err);
-                    return res.render('allArticle', {articles:articles, user: user, isUser: true });
+                    return res.render('allArticle', {articles:articles, user: user, isUser: true, title: 'My Articles' });
             });
         });
     }
@@ -133,7 +133,7 @@ router.get('/liked', function (req, res, next) {
             .exec((err, user) =>{
                 if(err)
                     return next(err);
-                return res.render('allArticle', {articles: user.likedArticles, user: user, isUser: true});
+                return res.render('allArticle', {articles: user.likedArticles, user: user, isUser: true, title: 'Liked Articles'});
             })
     }
     else{
@@ -164,7 +164,7 @@ router.get('/popular', function (req, res, next) {
                 articles.sort((a,b) => b.readersLiked.length - a.readersLiked.length);
                 if(articles.length > 10)
                     articles = articles.slice(0,10);
-                return res.render('allArticle', {articles: articles, user: user, isUser: true});
+                return res.render('allArticle', {articles: articles, user: user, isUser: true, title: 'Popular Articles'});
             });
         });
     }

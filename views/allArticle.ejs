@@ -1,6 +1,6 @@
     <%- include('partials/header') -%>
     <% if(articles.length) { %>
-    <h1>All Articles</h1>
+    <h1><%= title %></h1>
     <div class='article-list-grid'>
     <% articles.forEach(elem => { %>
         <div class='single'>
